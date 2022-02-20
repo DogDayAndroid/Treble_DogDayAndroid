@@ -1,7 +1,7 @@
-From 27f070bcc08f051ec8d0342b14a9399fd40cec36 Mon Sep 17 00:00:00 2001
+From def9758c7d1434def0bf0e9c105194b41b342d49 Mon Sep 17 00:00:00 2001
 From: Danny Lin <danny@kdrag0n.dev>
 Date: Mon, 25 Oct 2021 19:32:33 -0700
-Subject: [PATCH 12/13] SystemUI: Allow Wi-Fi/cell tiles to co-exist with
+Subject: [PATCH 11/11] SystemUI: Allow Wi-Fi/cell tiles to co-exist with
  provider model
 
 The dedicated Wi-Fi/cellular data QS tiles are partially working now

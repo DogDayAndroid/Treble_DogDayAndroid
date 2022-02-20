@@ -17,7 +17,7 @@
 # 创建目录并进入
 mkdir pixel; cd pixel
 # 克隆本项目
-git clone https://gitee.com/DogDayAndroid/Treble_DogDayAndroid.git -b twelve
+git clone https://gitee.com/DogDayAndroid/Treble_DogDayAndroid.git -b DogDayAndroid_twelve
 # 执行构建脚本（初始化构建）
 bash Treble_DogDayAndroid/build.sh
 ```
