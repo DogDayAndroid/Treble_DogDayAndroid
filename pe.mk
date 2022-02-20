@@ -5,4 +5,4 @@ $(call inherit-product, device/custom/sepolicy/common/sepolicy.mk)
 TARGET_BOOT_ANIMATION_RES := 1080
 
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    ro.system.ota.json_url=https://raw.githubusercontent.com/ponces/treble_build_pe/twelve/ota.json
+    ro.system.ota.json_url=https://gitee.com/DogDayAndroid/Treble_DogDayAndroid/raw/twelve/ota.json
