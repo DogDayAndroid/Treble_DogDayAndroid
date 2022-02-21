@@ -71,10 +71,6 @@ echo ""
 
 echo "[4] 应用个人补丁"
 bash $BL/apply-patches.sh $BL personal
-echo ""
-
-echo "[4] 应用专用设备补丁"
-bash $BL/apply-patches.sh $BL a40
 echo "#####################################"
 echo ""
 
@@ -158,7 +154,7 @@ generateOtaJson() {
                 "arm64-ab-slim") name="treble_arm64_bvS-slim";;
             esac
             size=$(wc -c $file | awk '{print $1}')
-            url="https://github.com/ponces/treble_build_pe/releases/download/$VERSION/$(basename $file)"
+            url="https://github.com/DogDayAndroid/Treble_DogDayAndroid/releases/download/$VERSION/$(basename $file)"
             json="${json} {\"name\": \"$name\",\"size\": \"$size\",\"url\": \"$url\"},"
         done
         json="${json%?}]}"
