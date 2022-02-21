@@ -1,7 +1,7 @@
 #!/bin/bash
-if (whiptail --title "DogDayAndroid源码自动构建机器人" --yesno "5秒后开始进行构建\n参考:github.com/ponces/treble_build_pe\n编写:easternDay" 10 60) then
+if (whiptail --title "DogDayAndroid源码自动构建机器人" --yesno "点击<是>开始进行构建\n参考:github.com/ponces/treble_build_pe\n编写:easternDay" 10 60) then
     echo ""
-    sleep 5
+    # sleep 5
 else
     exit
 fi
@@ -43,36 +43,45 @@ then
 fi
 
 # 提示是否需要进行代码拉取
-if (whiptail --title "是否同步" --yesno "此选项决定你是否进行本地代码同步拉取。\n如果你是第一次运行请选择<YES>。" 10 60) then
+if (whiptail --title "是否同步" --yesno "此选项决定你是否进行本地代码同步拉取和补丁的修复。\n如果你是第一次运行请选择<YES>。" 10 60) then
     echo "#####################################"
     echo "同步仓库中……"
     repo sync -c --force-sync --no-clone-bundle --no-tags -j$(nproc --all)
     echo "#####################################"
     echo ""
+
+    echo "#####################################"
+    echo "[1] 设置准备环境"
+    source build/envsetup.sh &> /dev/null
+    mkdir -p $BD
+    echo ""
+
+    echo "[2] 应用必备补丁"
+    bash $BL/apply-patches.sh $BL prerequisite
+    echo ""
+
+    echo "[3] 应用PHH补丁"
+    cd device/phh/treble
+    cp $BL/pe.mk .
+    bash generate.sh pe
+    cd ../../..
+    bash $BL/apply-patches.sh $BL phh
+    echo ""
+
+    echo "[4] 应用个人补丁"
+    bash $BL/apply-patches.sh $BL personal
+    echo "#####################################"
+    echo ""
+else
+    echo "#####################################"
+    echo "跳过源码拉取和打补丁过程"
+    echo "#####################################"
+    echo "设置准备环境中……"
+    source build/envsetup.sh &> /dev/null
+    mkdir -p $BD
+    echo "#####################################"
+    echo ""
 fi
-
-echo "#####################################"
-echo "[1] 设置准备环境"
-source build/envsetup.sh &> /dev/null
-mkdir -p $BD
-echo ""
-
-echo "[2] 应用必备补丁"
-bash $BL/apply-patches.sh $BL prerequisite
-echo ""
-
-echo "[3] 应用PHH补丁"
-cd device/phh/treble
-cp $BL/pe.mk .
-bash generate.sh pe
-cd ../../..
-bash $BL/apply-patches.sh $BL phh
-echo ""
-
-echo "[4] 应用个人补丁"
-bash $BL/apply-patches.sh $BL personal
-echo "#####################################"
-echo ""
 
 buildTrebleApp() {
     echo "#####################################"
@@ -164,7 +173,9 @@ generateOtaJson() {
     echo ""
 }
 
-buildTrebleApp
+if (whiptail --title "Treble App" --yesno "是否生成Treble App?" 10 60) then
+    buildTrebleApp
+fi
 buildVariant treble_arm64_bvS
 buildSasImages
 generatePackages
