@@ -1,18 +1,18 @@
-From bacb720bc17848dafaa401daff6bbb63ca07ddf7 Mon Sep 17 00:00:00 2001
+From ab391255baeac3660c9eb6f0556bf897669c7246 Mon Sep 17 00:00:00 2001
 From: Alberto Ponces <ponces26@gmail.com>
 Date: Wed, 25 Dec 2019 12:34:05 +0200
 Subject: [PATCH 4/9] Rework securize tweak
 
 ---
- base.mk      |  1 -
- rw-system.sh | 54 +++++++++++++++++++++++++++++-----------------------
- 2 files changed, 30 insertions(+), 25 deletions(-)
+ base.mk | 1 -
+ rw-system.sh | 54 ++++++++++++++++++++++++++++++----------------------
+ 2 files changed, 32 insertions(+), 23 deletions(-)
 
 diff --git a/base.mk b/base.mk
-index 786c3a6..eb610e3 100644
+index d9c3ca6..b809100 100644
 --- a/base.mk
 +++ b/base.mk
-@@ -159,7 +159,6 @@ PRODUCT_PACKAGES += \
+@@ -158,7 +158,6 @@ PRODUCT_PACKAGES += \
  	resetprop_phh
  
  PRODUCT_COPY_FILES += \
@@ -21,10 +21,15 @@ index 786c3a6..eb610e3 100644
  
  PRODUCT_COPY_FILES += \
 diff --git a/rw-system.sh b/rw-system.sh
-index 5bfa270..6735187 100644
+index 5bfa270..5406110 100644
 --- a/rw-system.sh
 +++ b/rw-system.sh
-@@ -706,30 +706,55 @@ if [ -f /system/phh/secure ] || [ -f /metadata/phh/secure ];then
+@@ -701,35 +701,59 @@ copyprop() {
+         resetprop_phh "$1" "$(getprop "$2")"
+     fi
+ }
+-if [ -f /system/phh/secure ] || [ -f /metadata/phh/secure ];then
+     copyprop ro.build.device ro.vendor.build.device
      copyprop ro.system.build.fingerprint ro.vendor.build.fingerprint
      copyprop ro.bootimage.build.fingerprint ro.vendor.build.fingerprint
      copyprop ro.build.fingerprint ro.vendor.build.fingerprint
@@ -76,16 +81,16 @@ index 5bfa270..6735187 100644
 +    copyprop ro.product.system_ext.manufacturer ro.vendor.product.manufacturer
      copyprop ro.system.product.manufacturer ro.product.vendor.manufacturer
      copyprop ro.product.manufacturer ro.product.vendor.manufacturer
--    (getprop ro.vendor.build.security_patch; getprop ro.keymaster.xxx.security_patch) |sort |tail -n 1 |while read v;do
--        [ -n "$v" ] && resetprop_phh ro.build.version.security_patch "$v"
--    done
 +    copyprop ro.product.system.manufacturer ro.product.vendor.manufacturer
 +    copyprop ro.product.product.manufacturer ro.product.vendor.manufacturer
 +    copyprop ro.product.system_ext.manufacturer ro.product.vendor.manufacturer
+-    (getprop ro.vendor.build.security_patch; getprop ro.keymaster.xxx.security_patch) |sort |tail -n 1 |while read v;do
+-        [ -n "$v" ] && resetprop_phh ro.build.version.security_patch "$v"
+-    done
  
      resetprop_phh ro.build.tags release-keys
      resetprop_phh ro.boot.vbmeta.device_state locked
-@@ -743,25 +768,6 @@ if [ -f /system/phh/secure ] || [ -f /metadata/phh/secure ];then
+@@ -743,25 +767,6 @@ if [ -f /system/phh/secure ] || [ -f /metadata/phh/secure ];then
      resetprop_phh ro.build.type user
      resetprop_phh ro.build.selinux 0
  
@@ -112,5 +117,3 @@ index 5bfa270..6735187 100644
      f=/vendor/lib$abi/libstagefright_foundation.so
      if [ -f "$f" ];then
 -- 
-2.35.1
-
