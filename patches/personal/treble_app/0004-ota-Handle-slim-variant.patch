@@ -1,4 +1,4 @@
-From 6d8bd60d203570ac1e39556c2c47a83cebed6997 Mon Sep 17 00:00:00 2001
+From df563c9e6d3f6784ab980d8d8c9788fcb7983169 Mon Sep 17 00:00:00 2001
 From: Alberto Ponces <ponces26@gmail.com>
 Date: Wed, 9 Feb 2022 12:41:30 +0000
 Subject: [PATCH 4/4] ota: Handle slim variant
@@ -8,10 +8,10 @@ Subject: [PATCH 4/4] ota: Handle slim variant
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/app/src/main/java/me/phh/treble/app/UpdaterActivity.kt b/app/src/main/java/me/phh/treble/app/UpdaterActivity.kt
-index b90bc00..e8de382 100644
+index 12f3834..71b2145 100644
 --- a/app/src/main/java/me/phh/treble/app/UpdaterActivity.kt
 +++ b/app/src/main/java/me/phh/treble/app/UpdaterActivity.kt
-@@ -212,10 +212,10 @@ class UpdaterActivity : PreferenceActivity() {
+@@ -252,10 +252,10 @@ class UpdaterActivity : PreferenceActivity() {
  
      private fun getVariant() : String {
          var flavor = SystemProperties.get("ro.build.flavor").replace(Regex("-user(debug)?"), "")

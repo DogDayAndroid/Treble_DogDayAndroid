@@ -1,4 +1,4 @@
-From 8dc27bdca22d5fb56818a84104ce9ed4e3fed2ff Mon Sep 17 00:00:00 2001
+From d2ac7fa691535dd1f3bc6fa87531b04915c65d5e Mon Sep 17 00:00:00 2001
 From: Victor Bo <bvoid@yandex.ru>
 Date: Tue, 1 Feb 2022 14:47:52 +0000
 Subject: [PATCH 3/4] Enable Dynamic Superuser (2/2)
@@ -33,10 +33,10 @@ index e2471cf..6949905 100644
          spListener.onSharedPreferenceChanged(sp, MiscSettings.bluetooth)
          spListener.onSharedPreferenceChanged(sp, MiscSettings.displayFps)
 diff --git a/app/src/main/java/me/phh/treble/app/MiscSettings.kt b/app/src/main/java/me/phh/treble/app/MiscSettings.kt
-index f93c240..9fd8ca2 100644
+index b98048b..5bb74dc 100644
 --- a/app/src/main/java/me/phh/treble/app/MiscSettings.kt
 +++ b/app/src/main/java/me/phh/treble/app/MiscSettings.kt
-@@ -12,6 +12,7 @@ object MiscSettings : Settings {
+@@ -13,6 +13,7 @@ object MiscSettings : Settings {
      val mobileSignal = "key_misc_mobile_signal"
      val fpsDivisor = "key_misc_fps_divisor"
      val displayFps = "key_misc_display_fps"
@@ -45,11 +45,11 @@ index f93c240..9fd8ca2 100644
      val multiCameras = "key_misc_multi_camera"
      val forceCamera2APIHAL3 = "key_misc_force_camera2api_hal3"
 diff --git a/app/src/main/res/xml/pref_misc.xml b/app/src/main/res/xml/pref_misc.xml
-index afad571..170869f 100644
+index 40c4853..a60d89f 100644
 --- a/app/src/main/res/xml/pref_misc.xml
 +++ b/app/src/main/res/xml/pref_misc.xml
-@@ -143,6 +143,11 @@
- 					android:key="key_misc_securize" />
+@@ -141,6 +141,11 @@
+ 				android:summary="Unlikely to work for you" />
  		<Preference android:title="@string/remove_telephony_subsystem"
  					android:key="key_misc_removetelephony" />
 +		<CheckBoxPreference
