@@ -94,6 +94,7 @@ buildTrebleApp() {
     echo ""
 }
 
+<<<<<<< HEAD
 buildVariant() {
     echo "#####################################"
     echo "构建Variant镜像中……"
@@ -106,6 +107,14 @@ buildVariant() {
     rm -rf out/target/product/phhgsi*
     echo "#####################################"
     echo ""
+=======
+buildRegularVariant() {
+    lunch treble_arm64_bvS-userdebug
+    make installclean
+    make -j$(nproc --all) systemimage
+    make vndk-test-sepolicy
+    mv $OUT/system.img $BD/system-treble_arm64_bvS.img
+>>>>>>> twelve
 }
 
 buildSlimVariant() {
@@ -113,17 +122,20 @@ buildSlimVariant() {
     echo "精简Variant镜像中……"
     wget https://gist.github.com/ponces/891139a70ee4fdaf1b1c3aed3a59534e/raw/slim.patch -O /tmp/slim.patch
     (cd vendor/gapps && git am /tmp/slim.patch)
-    lunch ${1}-userdebug
     make -j$(nproc --all) systemimage
-    mv $OUT/system.img $BD/system-$1-slim.img
+    mv $OUT/system.img $BD/system-treble_arm64_bvS-slim.img
     (cd vendor/gapps && git reset --hard HEAD~1)
     echo "#####################################"
     echo ""
 }
 
+<<<<<<< HEAD
 buildSasImages() {
     echo "#####################################"
     echo "生成VNDKLite镜像中……"
+=======
+buildVndkliteVariant() {
+>>>>>>> twelve
     cd sas-creator
     sudo bash lite-adapter.sh 64 $BD/system-treble_arm64_bvS.img
     cp s.img $BD/system-treble_arm64_bvS-vndklite.img
@@ -134,12 +146,18 @@ buildSasImages() {
 }
 
 generatePackages() {
+<<<<<<< HEAD
     echo "#####################################"
     echo "打包所有生成镜像中……"
     BASE_IMAGE=$BD/system-treble_arm64_bvS.img
     xz -cv $BASE_IMAGE -T0 > $BD/PixelExperience_arm64-ab-12.0-$BUILD_DATE-UNOFFICIAL.img.xz
     xz -cv ${BASE_IMAGE%.img}-vndklite.img -T0 > $BD/PixelExperience_arm64-ab-vndklite-12.0-$BUILD_DATE-UNOFFICIAL.img.xz
     xz -cv ${BASE_IMAGE%.img}-slim.img -T0 > $BD/PixelExperience_arm64-ab-slim-12.0-$BUILD_DATE-UNOFFICIAL.img.xz
+=======
+    xz -cv $BD/system-treble_arm64_bvS.img -T0 > $BD/PixelExperience_arm64-ab-12.0-$BUILD_DATE-UNOFFICIAL.img.xz
+    xz -cv $BD/system-treble_arm64_bvS-vndklite.img -T0 > $BD/PixelExperience_arm64-ab-vndklite-12.0-$BUILD_DATE-UNOFFICIAL.img.xz
+    xz -cv $BD/system-treble_arm64_bvS-slim.img -T0 > $BD/PixelExperience_arm64-ab-slim-12.0-$BUILD_DATE-UNOFFICIAL.img.xz
+>>>>>>> twelve
     rm -rf $BD/system-*.img
     if (whiptail --title "提示" --yesno "是否删除生成好的镜像？" 10 60) then
         rm -rf $BD/system-*.img
@@ -173,11 +191,18 @@ generateOtaJson() {
     echo ""
 }
 
+<<<<<<< HEAD
 if (whiptail --title "Treble App" --yesno "是否生成Treble App?" 10 60) then
     buildTrebleApp
 fi
 buildVariant treble_arm64_bvS
 buildSasImages
+=======
+buildTrebleApp
+buildRegularVariant
+buildSlimVariant
+buildVndkliteVariant
+>>>>>>> twelve
 generatePackages
 generateOtaJson
 
