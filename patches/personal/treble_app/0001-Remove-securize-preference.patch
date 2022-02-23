@@ -48,19 +48,19 @@ index 819df0e..f93c240 100644
 -
          val removeTelephonyPref = findPreference<Preference>(MiscSettings.removeTelephony)
          removeTelephonyPref!!.setOnPreferenceClickListener {
- 
+
 diff --git a/app/src/main/res/xml/pref_misc.xml b/app/src/main/res/xml/pref_misc.xml
-index e5ac34e..c93dbb7 100644
+index afad571..40c4853 100644
 --- a/app/src/main/res/xml/pref_misc.xml
 +++ b/app/src/main/res/xml/pref_misc.xml
 @@ -139,8 +139,6 @@
  				android:key="key_misc_dt2w"
-             android:title="Double tap to wake"
-             android:summary="Unlikely to work for you" />
--		<Preference android:title="Securize"
--            android:key="key_misc_securize" />
+ 				android:title="@string/Double_tap_to_wake"
+ 				android:summary="Unlikely to work for you" />
+-		<Preference android:title="@string/Securize"
+-					android:key="key_misc_securize" />
  		<Preference android:title="@string/remove_telephony_subsystem"
-             android:key="key_misc_removetelephony" />
+ 					android:key="key_misc_removetelephony" />
  	</PreferenceCategory>
 -- 
 2.35.1

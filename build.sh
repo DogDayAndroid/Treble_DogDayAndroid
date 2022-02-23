@@ -70,6 +70,11 @@ if (whiptail --title "是否同步" --yesno "此选项决定你是否进行本�
 
     echo "[4] 应用个人补丁"
     bash $BL/apply-patches.sh $BL personal
+    echo ""
+
+    echo "[5] 增加个人使用的系统应用"
+    #mkdir -p packages/apps/TrebleCheck_App
+    #cp -rf $BL/app/TrebleCheck_App/ packages/apps/
     echo "#####################################"
     echo ""
 else
@@ -94,8 +99,7 @@ buildTrebleApp() {
     echo ""
 }
 
-<<<<<<< HEAD
-buildVariant() {
+buildRegularVariant() {
     echo "#####################################"
     echo "构建Variant镜像中……"
     lunch ${1}-userdebug
@@ -103,18 +107,8 @@ buildVariant() {
     make -j$(nproc --all) systemimage
     make vndk-test-sepolicy
     mv $OUT/system.img $BD/system-$1.img
-    buildSlimVariant $1
-    rm -rf out/target/product/phhgsi*
     echo "#####################################"
     echo ""
-=======
-buildRegularVariant() {
-    lunch treble_arm64_bvS-userdebug
-    make installclean
-    make -j$(nproc --all) systemimage
-    make vndk-test-sepolicy
-    mv $OUT/system.img $BD/system-treble_arm64_bvS.img
->>>>>>> twelve
 }
 
 buildSlimVariant() {
@@ -123,22 +117,18 @@ buildSlimVariant() {
     wget https://gist.github.com/ponces/891139a70ee4fdaf1b1c3aed3a59534e/raw/slim.patch -O /tmp/slim.patch
     (cd vendor/gapps && git am /tmp/slim.patch)
     make -j$(nproc --all) systemimage
-    mv $OUT/system.img $BD/system-treble_arm64_bvS-slim.img
+    mv $OUT/system.img $BD/system-$1-slim.img
     (cd vendor/gapps && git reset --hard HEAD~1)
     echo "#####################################"
     echo ""
 }
 
-<<<<<<< HEAD
-buildSasImages() {
+buildVndkliteVariant() {
     echo "#####################################"
     echo "生成VNDKLite镜像中……"
-=======
-buildVndkliteVariant() {
->>>>>>> twelve
     cd sas-creator
-    sudo bash lite-adapter.sh 64 $BD/system-treble_arm64_bvS.img
-    cp s.img $BD/system-treble_arm64_bvS-vndklite.img
+    sudo bash lite-adapter.sh 64 $BD/system-$1.img
+    cp s.img $BD/system-$1-vndklite.img
     sudo rm -rf s.img d tmp
     cd ..
     echo "#####################################"
@@ -146,19 +136,13 @@ buildVndkliteVariant() {
 }
 
 generatePackages() {
-<<<<<<< HEAD
     echo "#####################################"
     echo "打包所有生成镜像中……"
     BASE_IMAGE=$BD/system-treble_arm64_bvS.img
     xz -cv $BASE_IMAGE -T0 > $BD/PixelExperience_arm64-ab-12.0-$BUILD_DATE-UNOFFICIAL.img.xz
     xz -cv ${BASE_IMAGE%.img}-vndklite.img -T0 > $BD/PixelExperience_arm64-ab-vndklite-12.0-$BUILD_DATE-UNOFFICIAL.img.xz
     xz -cv ${BASE_IMAGE%.img}-slim.img -T0 > $BD/PixelExperience_arm64-ab-slim-12.0-$BUILD_DATE-UNOFFICIAL.img.xz
-=======
-    xz -cv $BD/system-treble_arm64_bvS.img -T0 > $BD/PixelExperience_arm64-ab-12.0-$BUILD_DATE-UNOFFICIAL.img.xz
-    xz -cv $BD/system-treble_arm64_bvS-vndklite.img -T0 > $BD/PixelExperience_arm64-ab-vndklite-12.0-$BUILD_DATE-UNOFFICIAL.img.xz
-    xz -cv $BD/system-treble_arm64_bvS-slim.img -T0 > $BD/PixelExperience_arm64-ab-slim-12.0-$BUILD_DATE-UNOFFICIAL.img.xz
->>>>>>> twelve
-    rm -rf $BD/system-*.img
+    xz -cv ${BASE_IMAGE%.img}-slim-vndklite.img -T0 > $BD/PixelExperience_arm64-ab-slim-vndklite-12.0-$BUILD_DATE-UNOFFICIAL.img.xz
     if (whiptail --title "提示" --yesno "是否删除生成好的镜像？" 10 60) then
         rm -rf $BD/system-*.img
     fi
@@ -179,6 +163,7 @@ generateOtaJson() {
                 "arm64-ab") name="treble_arm64_bvS";;
                 "arm64-ab-vndklite") name="treble_arm64_bvS-vndklite";;
                 "arm64-ab-slim") name="treble_arm64_bvS-slim";;
+                "arm64-ab-slim-vndklite") name="treble_arm64_bvS-slim-vndklite";;
             esac
             size=$(wc -c $file | awk '{print $1}')
             url="https://github.com/DogDayAndroid/Treble_DogDayAndroid/releases/download/$VERSION/$(basename $file)"
@@ -191,18 +176,13 @@ generateOtaJson() {
     echo ""
 }
 
-<<<<<<< HEAD
 if (whiptail --title "Treble App" --yesno "是否生成Treble App?" 10 60) then
     buildTrebleApp
 fi
-buildVariant treble_arm64_bvS
-buildSasImages
-=======
-buildTrebleApp
-buildRegularVariant
-buildSlimVariant
-buildVndkliteVariant
->>>>>>> twelve
+buildRegularVariant treble_arm64_bvS
+buildSlimVariant  treble_arm64_bvS
+buildVndkliteVariant treble_arm64_bvS
+buildVndkliteVariant treble_arm64_bvS-slim
 generatePackages
 generateOtaJson
 

@@ -45,21 +45,21 @@ index f93c240..9fd8ca2 100644
      val multiCameras = "key_misc_multi_camera"
      val forceCamera2APIHAL3 = "key_misc_force_camera2api_hal3"
 diff --git a/app/src/main/res/xml/pref_misc.xml b/app/src/main/res/xml/pref_misc.xml
-index c93dbb7..3f3b042 100644
+index afad571..170869f 100644
 --- a/app/src/main/res/xml/pref_misc.xml
 +++ b/app/src/main/res/xml/pref_misc.xml
-@@ -141,6 +141,11 @@
-             android:summary="Unlikely to work for you" />
+@@ -143,6 +143,11 @@
+ 					android:key="key_misc_securize" />
  		<Preference android:title="@string/remove_telephony_subsystem"
-             android:key="key_misc_removetelephony" />
+ 					android:key="key_misc_removetelephony" />
 +		<CheckBoxPreference
-+            android:defaultValue="false"
-+            android:key="key_misc_dynamic_superuser"
-+            android:title="Enable Dynamic Superuser"
-+            android:summary="Breaks SafetyNet attestation" />
++           			android:defaultValue="false"
++            		android:key="key_misc_dynamic_superuser"
++           			android:title="Enable Dynamic Superuser"
++           			android:summary="Breaks SafetyNet attestation" />
  	</PreferenceCategory>
-     <PreferenceCategory android:title="Debugging">
-         <Preference android:title="Debug Sensors">
+ 	<PreferenceCategory android:title="@string/Debugging">
+ 		<Preference android:title="@string/Debug_Sensors">
 -- 
 2.35.1
 

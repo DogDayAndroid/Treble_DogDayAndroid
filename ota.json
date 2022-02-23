@@ -1,41 +1,26 @@
 {
-<<<<<<< HEAD
   "version": "v401",
-  "date": "1645396655",
+  "date": "1645591417",
   "variants": [
     {
       "name": "treble_arm64_bvS",
-      "size": "1377563888",
-      "url": "https://github.com/DogDayAndroid/Treble_DogDayAndroid/releases/download/v401/PixelExperience_arm64-ab-12.0-20220221-UNOFFICIAL.img.xz"
+      "size": "1447623456",
+      "url": "https://github.com/DogDayAndroid/Treble_DogDayAndroid/releases/download/v401/PixelExperience_arm64-ab-12.0-20220223-UNOFFICIAL.img.xz"
     },
     {
       "name": "treble_arm64_bvS-vndklite",
-      "size": "1425590760",
-      "url": "https://github.com/DogDayAndroid/Treble_DogDayAndroid/releases/download/v401/PixelExperience_arm64-ab-vndklite-12.0-20220221-UNOFFICIAL.img.xz"
+      "size": "1494139952",
+      "url": "https://github.com/DogDayAndroid/Treble_DogDayAndroid/releases/download/v401/PixelExperience_arm64-ab-vndklite-12.0-20220223-UNOFFICIAL.img.xz"
     },
     {
       "name": "treble_arm64_bvS-slim",
-      "size": "1052493128",
-      "url": "https://github.com/DogDayAndroid/Treble_DogDayAndroid/releases/download/v401/PixelExperience_arm64-ab-slim-12.0-20220221-UNOFFICIAL.img.xz"
-=======
-  "version": "v402",
-  "date": "1645438135",
-  "variants": [
-    {
-      "name": "treble_arm64_bvS",
-      "size": "1438987708",
-      "url": "https://github.com/ponces/treble_build_pe/releases/download/v402/PixelExperience_arm64-ab-12.0-20220221-UNOFFICIAL.img.xz"
+      "size": "1117682080",
+      "url": "https://github.com/DogDayAndroid/Treble_DogDayAndroid/releases/download/v401/PixelExperience_arm64-ab-slim-12.0-20220223-UNOFFICIAL.img.xz"
     },
     {
-      "name": "treble_arm64_bvS-slim",
-      "size": "1114075928",
-      "url": "https://github.com/ponces/treble_build_pe/releases/download/v402/PixelExperience_arm64-ab-slim-12.0-20220221-UNOFFICIAL.img.xz"
-    },
-    {
-      "name": "treble_arm64_bvS-vndklite",
-      "size": "1485658692",
-      "url": "https://github.com/ponces/treble_build_pe/releases/download/v402/PixelExperience_arm64-ab-vndklite-12.0-20220221-UNOFFICIAL.img.xz"
->>>>>>> twelve
+      "name": "treble_arm64_bvS-slim-vndklite",
+      "size": "1174325864",
+      "url": "https://github.com/DogDayAndroid/Treble_DogDayAndroid/releases/download/v401/PixelExperience_arm64-ab-slim-vndklite-12.0-20220223-UNOFFICIAL.img.xz"
     }
   ]
 }
