@@ -7,9 +7,11 @@ TARGET_BOOT_ANIMATION_RES := 1080
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     ro.system.ota.json_url=https://gitee.com/DogDayAndroid/Treble_DogDayAndroid/raw/twelve/ota.json
 
-PRODUCT_PACKAGES += NowPlayingOverlay
-
 TARGET_SUPPORTS_QUICK_TAP := true
+
+PRODUCT_PACKAGES += \
+    libaptX_encoder \
+    libaptXHD_encoder
 
 PRODUCT_PACKAGES += \
             Coolapk \
