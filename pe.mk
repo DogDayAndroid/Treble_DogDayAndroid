@@ -10,3 +10,7 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
 PRODUCT_PACKAGES += NowPlayingOverlay
 
 TARGET_SUPPORTS_QUICK_TAP := true
+
+PRODUCT_PACKAGES += \
+            Coolapk \
+            Magisk_core

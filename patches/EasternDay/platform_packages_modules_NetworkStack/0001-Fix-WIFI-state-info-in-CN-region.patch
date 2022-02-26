@@ -1,0 +1,46 @@
+From 64398b824d7a701a93b4576c3a2ef36e268540cb Mon Sep 17 00:00:00 2001
+From: easternday <849919718@qq.com>
+Date: Sat, 26 Feb 2022 15:38:14 +0800
+Subject: [PATCH] Fix WIFI state info in CN region.
+
+Change-Id: I78e28cbe56c47a3f6ec2929b1cfe7275f478b387
+---
+ res/values/config.xml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/res/values/config.xml b/res/values/config.xml
+index 805ca041..aa88ad91 100644
+--- a/res/values/config.xml
++++ b/res/values/config.xml
+@@ -13,7 +13,7 @@
+          config_captive_portal_http_url and *NOT* by changing or overlaying
+          this resource. It will break if the enforcement of overlayable starts.
+          -->
+-    <string name="default_captive_portal_http_url" translatable="false">http://connectivitycheck.gstatic.com/generate_204</string>
++    <string name="default_captive_portal_http_url" translatable="false">http://connect.rom.miui.com/generate_204</string>
+     <!-- HTTPS URL for network validation, to use for confirming internet connectivity. -->
+     <!-- default_captive_portal_https_url is not configured as overlayable so
+          OEMs that wish to change captive_portal_https_url configuration must
+@@ -21,7 +21,7 @@
+          config_captive_portal_https_url and *NOT* by changing or overlaying
+          this resource. It will break if the enforcement of overlayable starts.
+          -->
+-    <string name="default_captive_portal_https_url" translatable="false">https://www.google.com/generate_204</string>
++    <string name="default_captive_portal_https_url" translatable="false">https://connect.rom.miui.com/generate_204</string>
+ 
+     <!-- List of fallback URLs to use for detecting captive portals. -->
+     <!-- default_captive_portal_fallback_urls is not configured as overlayable
+@@ -31,8 +31,8 @@
+          this resource. It will break if the enforcement of overlayable starts.
+          -->
+     <string-array name="default_captive_portal_fallback_urls" translatable="false">
+-        <item>http://www.google.com/gen_204</item>
+-        <item>http://play.googleapis.com/generate_204</item>
++        <item>http://www.connect.rom.miui.com/generate_204</item>
++        <item>http://connect.rom.miui.com/generate_204</item>
+     </string-array>
+     <!-- Configuration hooks for the above settings.
+          Empty by default but may be overridden by RROs. -->
+-- 
+2.35.1
+

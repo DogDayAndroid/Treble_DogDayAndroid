@@ -72,9 +72,13 @@ if (whiptail --title "是否同步" --yesno "此选项决定你是否进行本�
     bash $BL/apply-patches.sh $BL personal
     echo ""
 
+    echo "[5] 应用CN修复补丁"
+    bash $BL/apply-patches.sh $BL EasternDay
+    echo ""
+
     echo "[5] 增加个人使用的系统应用"
     #mkdir -p packages/apps/TrebleCheck_App
-    #cp -rf $BL/app/TrebleCheck_App/ packages/apps/
+    #cp -rf $BL/app/* packages/apps/
     echo "#####################################"
     echo ""
 else
@@ -155,6 +159,9 @@ generateOtaJson() {
     echo "输出OTA更新文件中……"
     prefix="PixelExperience_"
     suffix="-12.0-$BUILD_DATE-UNOFFICIAL.img.xz"
+        if (whiptail --title "提示" --yesno "是否清除旧刷机包？" 10 60) then
+        rm -rf $BD/$prefix*.img
+    fi
     json="{\"version\": \"$VERSION\",\"date\": \"$(date +%s -d '-8hours')\",\"variants\": ["
     find $BD -name "*.img.xz" | {
         while read file; do
