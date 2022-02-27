@@ -1,0 +1,71 @@
+From b77f42eacac1f9dafb90498fab93e075193d1ff4 Mon Sep 17 00:00:00 2001
+From: Alberto Ponces <ponces26@gmail.com>
+Date: Tue, 7 Dec 2021 22:52:46 +0000
+Subject: [PATCH] Slim Pixel Experience 12
+
+---
+ config.mk | 19 -------------------
+ 1 file changed, 19 deletions(-)
+
+diff --git a/config.mk b/config.mk
+index 79ee709..4481283 100644
+--- a/config.mk
++++ b/config.mk
+@@ -16,25 +16,12 @@
+ #
+ #
+
+-# Recorder
+-ifeq ($(TARGET_SUPPORTS_GOOGLE_RECORDER), true)
+-PRODUCT_PACKAGES += \
+-    RecorderPrebuilt
+-endif
+-
+ # arcore
+ ifeq ($(TARGET_INCLUDE_STOCK_ARCORE),true)
+ PRODUCT_PACKAGES += \
+     arcore
+ endif
+
+-# Live Wallpapers
+-ifeq ($(TARGET_INCLUDE_LIVE_WALLPAPERS),true)
+-PRODUCT_PACKAGES += \
+-    PixelLiveWallpaperPrebuilt \
+-    MicropaperPrebuilt
+-endif
+-
+ # Quick Tap
+ ifeq ($(TARGET_SUPPORTS_QUICK_TAP),true)
+ PRODUCT_PACKAGES += \
+@@ -50,21 +37,16 @@ PRODUCT_PACKAGES += \
+     Chrome-Stub \
+     DevicePolicyPrebuilt \
+     DiagnosticsToolPrebuilt \
+-    Drive \
+     GoogleCamera \
+     GoogleContacts \
+     GoogleContactsSyncAdapter \
+     GoogleTTS \
+     LatinIMEGooglePrebuilt \
+     LocationHistoryPrebuilt \
+-    Maps \
+     MarkupGoogle \
+-    Photos \
+     PixelThemesStub \
+-    PixelWallpapers2021 \
+     PrebuiltBugle \
+     PrebuiltDeskClockGoogle \
+-    PrebuiltGmail \
+     PrebuiltGoogleTelemetryTvp \
+     SoundAmplifierPrebuilt \
+     SoundPickerPrebuilt \
+@@ -116,7 +98,6 @@ PRODUCT_PACKAGES += \
+     TetheringEntitlement \
+     TurboPrebuilt \
+     USCCDM \
+-    Velvet \
+     VzwOmaTrigger \
+     WellbeingPrebuilt \
+     WfcActivation
+-- 
+2.32.0

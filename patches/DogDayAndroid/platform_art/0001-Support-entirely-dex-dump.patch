@@ -1,0 +1,159 @@
+From 9449f9078ed4f15720eaa13275f8651c6c3033a2 Mon Sep 17 00:00:00 2001
+From: easternday <849919718@qq.com>
+Date: Sun, 27 Feb 2022 17:54:49 +0800
+Subject: [PATCH] Support entirely dex dump.
+
+Change-Id: I530a3ec79554b9b47a19932263fbea2804312efe
+---
+ libdexfile/dex/dex_file.cc         | 12 ++++++
+ libdexfile/dex/dex_file.h          | 62 ++++++++++++++++++++++++++++++
+ runtime/class_linker.cc            |  7 ++++
+ runtime/interpreter/interpreter.cc |  4 ++
+ 4 files changed, 85 insertions(+)
+
+diff --git a/libdexfile/dex/dex_file.cc b/libdexfile/dex/dex_file.cc
+index dc5f27e4f6..32a0648409 100644
+--- a/libdexfile/dex/dex_file.cc
++++ b/libdexfile/dex/dex_file.cc
+@@ -39,6 +39,11 @@
+ #include "standard_dex_file.h"
+ #include "utf-inl.h"
+ 
++//增加一些自己用到的库
++#include <fstream>//用于dump内存保存为文件
++#include <sys/types.h>
++#include <regex.h>
++
+ namespace art {
+ 
+ using android::base::StringPrintf;
+@@ -133,6 +138,13 @@ DexFile::DexFile(const uint8_t* base,
+   CHECK_ALIGNED(begin_, alignof(Header));
+ 
+   InitializeSectionsFromMapList();
++
++  //------------------------------------------------------------------
++  //EasternDay：dump文件
++  //------------------------------------------------------------------
++  DayAfternoon("art/libdexfile/dex/dex_file.cc","__DexFile#DexFile");
++  //------------------------------------------------------------------
++  //------------------------------------------------------------------
+ }
+ 
+ DexFile::~DexFile() {
+diff --git a/libdexfile/dex/dex_file.h b/libdexfile/dex/dex_file.h
+index e3027fc95f..4fa3ebed3b 100644
+--- a/libdexfile/dex/dex_file.h
++++ b/libdexfile/dex/dex_file.h
+@@ -33,6 +33,12 @@
+ #include "jni.h"
+ #include "modifiers.h"
+ 
++//增加一些自己用到的库
++#include <fstream>//用于dump内存保存为文件
++#include <sys/types.h>
++#include <regex.h>
++#include <fcntl.h>
++
+ namespace art {
+ 
+ class ClassDataItemIterator;
+@@ -198,6 +204,62 @@ class DexFile {
+   // Closes a .dex file.
+   virtual ~DexFile();
+ 
++  //------------------------------------------------------------------
++  //EasternDay：輸出文件location
++  //------------------------------------------------------------------
++  void DayAfternoon(const std::string sourceFile, const std::string tag) const {
++    //----------------------------------------------------------------
++    //安卓12的用户app全部存放在/data/app/目录下，因此先判定是否是用户应用
++    //----------------------------------------------------------------
++    if (GetLocation().find("/data/app/") != std::string::npos) {
++      //--------------------------------------------------------------
++      //pkgName：     用于存放包名
++      //dexFileName： 用于存放dex文件名
++      //通过抓取日志发现如下内容：
++      //2022-01-27 17:57:52.421 8225-8225/xyz.easternday.myapplication W/y.myapplicatio: [EasternDay]-{art/libdexfile/dex/dex_file.cc}@/data/app/~~6WXjxa5NiZOtSvNbL22e_Q==/xyz.easternday.myapplication-JTpOrTuGCwDxfH5Hu5_0Tg==/base.apk!classes3.dex
++      //--------------------------------------------------------------
++      //--------------------------------------------------------------
++      //利用子进程获取包名
++      //--------------------------------------------------------------
++      std::string szCmdline = "/proc/" + std::to_string(getpid()) + "/cmdline";
++      int fcmdline = open(szCmdline.c_str(), O_RDONLY);
++      if (fcmdline > 0) {
++        char szProcName[256] = {0};
++        //如果成功读取到则设置包名
++        if(read(fcmdline, szProcName, 256)){
++          //--------------------------------------------------------------
++          //dump文件
++          //通过access函数判断文件夹是否存在，-1表示不存在，0表示存在
++          //--------------------------------------------------------------
++          std::string dumpPath = szProcName;
++          dumpPath = "/storage/self/primary/Download/" + dumpPath + "/";//组合dump文件名
++          if (access(dumpPath.c_str(),0) != -1){
++            std::string dumpFilePath = dumpPath + std::to_string(Size()) + tag;//dump出来的dex文件名
++            LOG(WARNING) << "[EasternDay]-{" + sourceFile + "}@dex文件位置：" << GetLocation();//记录位置
++            LOG(WARNING) << "[EasternDay]-{" + sourceFile + "}@dex文件起始位置：" << Begin();//记录起始位置
++            LOG(WARNING) << "[EasternDay]-{" + sourceFile + "}@dex文件大小：" << Size();//记录大小
++            LOG(WARNING) << "[EasternDay]-{" + sourceFile + "}@dex文件输出位置：" << dumpFilePath;//记录输出位置
++            //输出文件
++            //if(access(dumpPath.c_str(),0) == -1){//不重复覆盖文件
++              auto dexfilefp = open(dumpFilePath.c_str(), O_CREAT | O_RDWR, 0666);
++              if (dexfilefp > 0) {
++                LOG(WARNING) << "[EasternDay]-{" + sourceFile + "}@dex文件输出状态：" << write(dexfilefp, (void *) Begin(), Size());
++                fsync(dexfilefp);
++                close(dexfilefp);
++              }
++            //}
++            //std::ofstream dst(dumpFilePath, std::ios::binary);
++            //dst.write(reinterpret_cast<const char*>(Begin()), Size());
++            //dst.close();
++          }
++        }
++        close(fcmdline);
++      }
++    }       
++  }
++  //------------------------------------------------------------------
++  //------------------------------------------------------------------
++
+   const std::string& GetLocation() const {
+     return location_;
+   }
+diff --git a/runtime/class_linker.cc b/runtime/class_linker.cc
+index e21a004e33..111de36690 100644
+--- a/runtime/class_linker.cc
++++ b/runtime/class_linker.cc
+@@ -3873,6 +3873,13 @@ void ClassLinker::LoadMethod(const DexFile& dex_file,
+   if (!return_type_is_fp && all_parameters_are_reference_or_int) {
+     dst->SetNterpInvokeFastPathFlag();
+   }
++
++  //------------------------------------------------------------------
++  //EasternDay：dump文件
++  //------------------------------------------------------------------
++  dex_file.DayAfternoon("art/runtime/class_linker.cc", "__ClassLinker#LoadMethod");
++  //------------------------------------------------------------------
++  //------------------------------------------------------------------
+ }
+ 
+ void ClassLinker::AppendToBootClassPath(Thread* self, const DexFile* dex_file) {
+diff --git a/runtime/interpreter/interpreter.cc b/runtime/interpreter/interpreter.cc
+index 302551f8dd..e3f10f7523 100644
+--- a/runtime/interpreter/interpreter.cc
++++ b/runtime/interpreter/interpreter.cc
+@@ -275,6 +275,10 @@ static inline JValue Execute(
+     JValue result_register,
+     bool stay_in_interpreter = false,
+     bool from_deoptimize = false) REQUIRES_SHARED(Locks::mutator_lock_) {
++
++  const DexFile* dex_file = shadow_frame.GetMethod()->GetDexFile();
++  dex_file->DayAfternoon("art/runtime/interpreter/interpreter.cc", "__Interpreter#Execute");
++
+   DCHECK(!shadow_frame.GetMethod()->IsAbstract());
+   DCHECK(!shadow_frame.GetMethod()->IsNative());
+ 
+-- 
+2.35.1
+

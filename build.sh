@@ -1,6 +1,9 @@
 #!/bin/bash
+
+# 获取版本号
 VERSION=$(whiptail --inputbox --title "DogDayAndroid源码自动构建机器人"  "输入构建版本号\N点击<是>开始进行构建\n参考:github.com/ponces/treble_build_pe\n编写:easternDay" 10 60 "V001" 3>&1 1>&2 2>&3)
-echo $VERSION
+
+# 版本号判断是否合理
 if [ $? ]; then
     if [ “$VERSION” = “” ]; then
         VERSION=“V001”
@@ -23,8 +26,10 @@ echo \
 # 开始记录时间
 START=`date +%s`
 BUILD_DATE="$(date +%Y%m%d)"
+
 # 设置不检查API
 WITHOUT_CHECK_API=true
+
 # 设置一些目录参数，下面会用到
 BL=$PWD/Treble_DogDayAndroid
 BD=$PWD/../builds
@@ -78,7 +83,11 @@ if (whiptail --title "是否同步" --yesno "此选项决定你是否进行本�
     bash $BL/apply-patches.sh $BL EasternDay
     echo ""
 
-    echo "[5] 增加个人使用的系统应用"
+    echo "[6] 脱壳功能支持"
+    bash $BL/apply-patches.sh $BL DogDayAndroid
+    echo ""
+
+    #echo "[5] 增加个人使用的系统应用"
     #mkdir -p packages/apps/TrebleCheck_App
     #cp -rf $BL/app/* packages/apps/
     echo "#####################################"
@@ -120,8 +129,13 @@ buildRegularVariant() {
 buildSlimVariant() {
     echo "#####################################"
     echo "精简Variant镜像中……"
-    wget https://gist.github.com/ponces/891139a70ee4fdaf1b1c3aed3a59534e/raw/slim.patch -O /tmp/slim.patch
-    (cd vendor/gapps && git am /tmp/slim.patch)
+    if (whiptail --title "提示" --yesno "是否下载slim.patch？\n新版本肯定没错;\n旧版本不用去github下载。" 10 60) then
+        wget https://gist.github.com/ponces/891139a70ee4fdaf1b1c3aed3a59534e/raw/slim.patch -O /tmp/slim.patch
+    else
+        cp $BL/slimpatch/slim.patch /tmp/slim.patch
+    fi
+    # 如果执行失败则输出提示
+    (cd vendor/gapps && (git am /tmp/slim.patch || git am --abort)) || echo "请更新slim.patch![https://gist.github.com/ponces/891139a70ee4fdaf1b1c3aed3a59534e/raw/slim.patch]"
     make -j$(nproc --all) systemimage
     (cd vendor/gapps && git reset --hard HEAD~1)
     mv $OUT/system.img $BD/system-treble_arm64_bvS-slim.img
