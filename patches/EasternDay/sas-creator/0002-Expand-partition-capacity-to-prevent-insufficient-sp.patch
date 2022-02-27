@@ -1,0 +1,25 @@
+From cfcc827b15089db83a8f5aef55b0dcc40d075f73 Mon Sep 17 00:00:00 2001
+From: easternday <849919718@qq.com>
+Date: Sun, 27 Feb 2022 12:04:33 +0800
+Subject: [PATCH 2/2] Expand partition capacity to prevent insufficient space.
+
+---
+ lite-adapter.sh |   2 +-
+ 1 files changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lite-adapter.sh b/lite-adapter.sh
+index 5e5e086..b2702a9 100644
+--- a/lite-adapter.sh
++++ b/lite-adapter.sh
+@@ -36,7 +36,7 @@ fi
+ rm -Rf tmp
+ mkdir -p d tmp
+ e2fsck -y -f s.img
+-resize2fs s.img 4000M
++resize2fs s.img 5000M
+ e2fsck -E unshare_blocks -y -f s.img
+ mount -o loop,rw s.img d
+ (
+-- 
+2.35.1
+

@@ -14,5 +14,4 @@ PRODUCT_PACKAGES += \
     libaptXHD_encoder
 
 PRODUCT_PACKAGES += \
-            Coolapk \
-            Magisk_core
+            Coolapk

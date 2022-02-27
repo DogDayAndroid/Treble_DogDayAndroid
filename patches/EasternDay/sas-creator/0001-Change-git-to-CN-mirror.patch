@@ -1,0 +1,39 @@
+From f124bbfd417b0d40b0278993760043350e6a6551 Mon Sep 17 00:00:00 2001
+From: easternday <849919718@qq.com>
+Date: Sun, 27 Feb 2022 00:55:39 +0800
+Subject: [PATCH 1/2] Change git to CN mirror.
+
+---
+ lite-adapter.sh | 2 +-
+ run.sh          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lite-adapter.sh b/lite-adapter.sh
+index 33cc007..5e5e086 100644
+--- a/lite-adapter.sh
++++ b/lite-adapter.sh
+@@ -11,7 +11,7 @@ set -ex
+ origin="$(readlink -f -- "$0")"
+ origin="$(dirname "$origin")"
+ 
+-[ ! -d vendor_vndk ] && git clone https://github.com/phhusson/vendor_vndk -b android-10.0
++[ ! -d vendor_vndk ] && git clone https://gitee.com/DogDayAndroid/vendor_vndk -b android-10.0
+ 
+ targetArch=64
+ [ "$1" == 32 ] && targetArch=32
+diff --git a/run.sh b/run.sh
+index 5cb8b72..9d4c668 100755
+--- a/run.sh
++++ b/run.sh
+@@ -11,7 +11,7 @@ set -ex
+ origin="$(readlink -f -- "$0")"
+ origin="$(dirname "$origin")"
+ 
+-[ ! -d vendor_vndk ] && git clone https://github.com/phhusson/vendor_vndk -b android-10.0
++[ ! -d vendor_vndk ] && git clone https://gitee.com/DogDayAndroid/vendor_vndk -b android-10.0
+ 
+ targetArch=64
+ [ "$1" == 32 ] && targetArch=32
+-- 
+2.35.1
+
