@@ -1,7 +1,11 @@
 #!/bin/bash
-if (whiptail --title "DogDayAndroid源码自动构建机器人" --yesno "点击<是>开始进行构建\n参考:github.com/ponces/treble_build_pe\n编写:easternDay" 10 60) then
-    echo ""
-    # sleep 5
+VERSION=$(whiptail --inputbox --title "DogDayAndroid源码自动构建机器人"  "输入构建版本号\N点击<是>开始进行构建\n参考:github.com/ponces/treble_build_pe\n编写:easternDay" 10 60 "V001" 3>&1 1>&2 2>&3)
+echo $VERSION
+if [ $? ]; then
+    if [ “$VERSION” = “” ]; then
+        VERSION=“V001”
+    fi
+   echo “版本号：” $VERSION
 else
     exit
 fi
@@ -24,8 +28,6 @@ WITHOUT_CHECK_API=true
 # 设置一些目录参数，下面会用到
 BL=$PWD/Treble_DogDayAndroid
 BD=$PWD/../builds
-# 版本号
-VERSION="v401"
 
 # 如果不存在.repo目录则创建
 if [ ! -d .repo ]
@@ -121,8 +123,8 @@ buildSlimVariant() {
     wget https://gist.github.com/ponces/891139a70ee4fdaf1b1c3aed3a59534e/raw/slim.patch -O /tmp/slim.patch
     (cd vendor/gapps && git am /tmp/slim.patch)
     make -j$(nproc --all) systemimage
-    mv $OUT/system.img $BD/system-$1-slim.img
     (cd vendor/gapps && git reset --hard HEAD~1)
+    mv $OUT/system.img $BD/system-treble_arm64_bvS-slim.img
     echo "#####################################"
     echo ""
 }
@@ -140,6 +142,9 @@ buildVndkliteVariant() {
 }
 
 generatePackages() {
+    if (whiptail --title "提示" --yesno "是否清除旧刷机包？" 10 60) then
+        (rm -rf $BD/$prefix*.img.xz) || echo “没有旧刷机包～“
+    fi
     echo "#####################################"
     echo "打包所有生成镜像中……"
     BASE_IMAGE=$BD/system-treble_arm64_bvS.img
@@ -159,9 +164,6 @@ generateOtaJson() {
     echo "输出OTA更新文件中……"
     prefix="PixelExperience_"
     suffix="-12.0-$BUILD_DATE-UNOFFICIAL.img.xz"
-        if (whiptail --title "提示" --yesno "是否清除旧刷机包？" 10 60) then
-        rm -rf $BD/$prefix*.img
-    fi
     json="{\"version\": \"$VERSION\",\"date\": \"$(date +%s -d '-8hours')\",\"variants\": ["
     find $BD -name "*.img.xz" | {
         while read file; do
