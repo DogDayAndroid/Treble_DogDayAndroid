@@ -33,10 +33,22 @@ bash Treble_DogDayAndroid/build.sh
 ## 致谢
 首先需要感谢本脚本的来源者，为本项目的自动化构建提供了极大帮助：
 - [ponces](https://github.com/ponces)
-  
+
 其次是这些以某种方式帮助了这个项目而有所功劳的人：
 - [Pixel Experience Team](https://download.pixelexperience.org/about)
 - [phhusson](https://github.com/phhusson)
 - [AndyYan](https://github.com/AndyCGYan)
 - [eremitein](https://github.com/eremitein)
 - [kdrag0n](https://github.com/kdrag0n)
+
+
+art/
+libdexfile/dex/dex_file.cc                 |  12 +
+libdexfile/dex/dex_file.h                  |  69 ++++++
+runtime/interpreter/interpreter.cc         |   4 +
+
+ dex2oat/dex2oat.cc                         |   8 +-
+ runtime/art_method.cc                      | 248 +++++++++++++++++++++
+ runtime/class_linker.cc                    |   7 +
+ runtime/native/dalvik_system_DexFile.cc    |  45 +++-
+ runtime/native/java_lang_reflect_Method.cc |  13 ++

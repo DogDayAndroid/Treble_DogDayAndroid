@@ -84,7 +84,7 @@ if (whiptail --title "是否同步" --yesno "此选项决定你是否进行本�
     echo ""
 
     echo "[6] 脱壳功能支持"
-    bash $BL/apply-patches.sh $BL DogDayAndroid
+    #bash $BL/apply-patches.sh $BL DogDayAndroid
     echo ""
 
     #echo "[5] 增加个人使用的系统应用"

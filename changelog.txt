@@ -1,0 +1,19 @@
+project art/                                    (*** NO BRANCH ***)
+ -m	dex2oat/dex2oat.cc
+ -m	libdexfile/dex/dex_file.cc
+ -m	libdexfile/dex/dex_file.h
+ -m	runtime/art_method.cc
+ -m	runtime/class_linker.cc
+ -m	runtime/interpreter/interpreter.cc
+ -m	runtime/native/dalvik_system_DexFile.cc
+ -m	runtime/native/java_lang_reflect_Method.cc
+project device/phh/treble/                      (*** NO BRANCH ***)
+ --	pe.mk
+project frameworks/base/                        (*** NO BRANCH ***)
+ -m	core/java/android/app/ActivityThread.java
+ --	core/java/top/easternday/DogDayAndroid.java
+ --	core/java/top/easternday/DogReflect.java
+ --	core/java/top/easternday/DogUtil.java
+ --	core/java/top/easternday/ToastUtil.java
+project libcore/                                (*** NO BRANCH ***)
+ -m	dalvik/src/main/java/dalvik/system/DexFile.java
